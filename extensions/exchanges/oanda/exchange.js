@@ -1,41 +1,41 @@
-const ccxt = require('ccxt')
+const {OandaApi} = require('./oanda')
   , path = require('path')
   // eslint-disable-next-line no-unused-vars
   , colors = require('colors')
   , _ = require('lodash')
 
-module.exports = function binance (conf) {
+module.exports = function oanda (conf) {
   var public_client, authed_client
 
   function publicClient () {
-    if (!public_client) public_client = new ccxt.binance({ 'apiKey': '', 'secret': '', 'options': { 'adjustForTimeDifference': true } })
+    if (!public_client) public_client = new OandaApi();
     return public_client
   }
 
   function authedClient () {
     if (!authed_client) {
-      if (!conf.binance || !conf.binance.key || conf.binance.key === 'YOUR-API-KEY') {
-        throw new Error('please configure your Binance credentials in ' + path.resolve(__dirname, 'conf.js'))
+      if (!conf.oanda || !conf.oanda.token || conf.oanda.token === 'YOUR-API-KEY') {
+        throw new Error('please configure your Oanda credentials in ' + path.resolve(__dirname, 'config.json'))
       }
-      authed_client = new ccxt.binance({ 'apiKey': conf.binance.key, 'secret': conf.binance.secret, 'options': { 'adjustForTimeDifference': true }, enableRateLimit: true })
+      authed_client = new OandaApi()
     }
     return authed_client
   }
 
   /**
-   * Convert BNB-BTC to BNB/BTC
+   * Convert WTICO-USD to WTICO_USD
    *
-   * @param product_id BNB-BTC
+   * @param product_id WTICO-USD
    * @returns {string}
    */
   function joinProduct(product_id) {
     let split = product_id.split('-')
-    return split[0] + '/' + split[1]
+    return split[0] + '_' + split[1]
   }
 
   function retry (method, args, err) {
     if (method !== 'getTrades') {
-      console.error(('\nBinance API is down! unable to call ' + method + ', retrying in 20s').red)
+      console.error(('\nOanda API is down! unable to call ' + method + ', retrying in 20s').red)
       if (err) console.error(err)
       console.error(args.slice(0, -1))
     }
@@ -47,7 +47,7 @@ module.exports = function binance (conf) {
   var orders = {}
 
   var exchange = {
-    name: 'binance',
+    name: 'oanda',
     historyScan: 'forward',
     historyScanUsesTime: true,
     makerFee: 0.1,
