@@ -1,3 +1,6 @@
+**/oanda/config.json
+package-lock.json
+.idea/*
 .DS_Store
 .env
 *.tar.gz
