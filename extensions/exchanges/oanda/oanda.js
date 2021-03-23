@@ -39,8 +39,14 @@ class OandaApi {
 
   async fetchTrades(symbol) {
     const body = await this._fetchTrades(symbol)
-    this._trades = []
+    if(!this.trades) {
+      this.trades = []
+    }
+    body.trades.forEach((trade) => {
+      this.trades.push(new this.ctx.primitives.Trade(trade))
+    })
 
+    return this.trades
   }
 
   async fetchMarkets() {
