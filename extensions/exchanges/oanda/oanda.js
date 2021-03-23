@@ -37,6 +37,12 @@ class OandaApi {
     return this.account
   }
 
+  async fetchTrades(symbol) {
+    const body = await this._fetchTrades(symbol)
+    this._trades = []
+
+  }
+
   async fetchMarkets() {
     const body = await this._fetchMarkets()
     if (!this.instruments) {
@@ -63,6 +69,17 @@ class OandaApi {
 
   }
 
+  _fetchTrades(symbol) {
+    return new Promise((resolve, reject) => {
+      this.ctx.trade.list(this.accountId, {instrument: symbol}, (res) => {
+        if (res.statusCode === '200') {
+          resolve(res.body)
+        } else {
+          reject(res.body)
+        }
+      })
+    })
+  }
   _fetchMarkets() {
     return new Promise((resolve, reject) => {
       this.ctx.account.instruments(this.accountId, {}, (res) => {
@@ -121,6 +138,6 @@ class OandaApi {
 }
 
 let oApi = new OandaApi()
-oApi.fetchMarkets()
+oApi.fetchTrades('WTICO_USD')
 exports.OandaApi = OandaApi
 exports.Granularity = Granularity
