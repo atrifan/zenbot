@@ -37,14 +37,33 @@ class OandaApi {
     return this.account
   }
 
-  async fetchTrades(symbol) {
-    const body = await this._fetchTrades(symbol)
-    if(!this.trades) {
-      this.trades = []
+  async _fetchTradesOfState(symbol, state) {
+    let trades = []
+    let execute = true
+    let beforeId = null
+    while(execute) {
+      let body = await this._fetchTrades(symbol, state, 500, beforeId)
+      body.trades.forEach((trade) => {
+        trades.push(new this.ctx.trade.Trade(trade))
+      })
+      if (body.trades.length == 0) {
+        execute = false
+        break
+      }
+      beforeId = body.trades[body.trades.length-1].id
     }
-    body.trades.forEach((trade) => {
-      this.trades.push(new this.ctx.primitives.Trade(trade))
-    })
+    return trades
+  }
+
+  async fetchTrades(symbol) {
+    let trades = await this._fetchTradesOfState(symbol,'CLOSED')
+    if(!this.trades) {
+      this.trades = trades
+    } else {
+      this.trades = this.trades.concat(trades)
+    }
+    trades = await this._fetchTradesOfState(symbol,'OPEN')
+    this.trades = this.trades.concat(trades)
 
     return this.trades
   }
@@ -75,9 +94,15 @@ class OandaApi {
 
   }
 
-  _fetchTrades(symbol) {
+  _fetchTrades(symbol, state, count, beforeId) {
     return new Promise((resolve, reject) => {
-      this.ctx.trade.list(this.accountId, {instrument: symbol}, (res) => {
+      let qparams = {
+        instrument: symbol, state: state, count: count
+      }
+      if(beforeId != null) {
+        qparams.beforeID = beforeId
+      }
+      this.ctx.trade.list(this.accountId, qparams, (res) => {
         if (res.statusCode === '200') {
           resolve(res.body)
         } else {
@@ -144,6 +169,6 @@ class OandaApi {
 }
 
 let oApi = new OandaApi()
-oApi.fetchTrades('WTICO_USD')
+oApi.fetchTrades('WTICO_USD').then((data)=>{console.log(data)})
 exports.OandaApi = OandaApi
 exports.Granularity = Granularity

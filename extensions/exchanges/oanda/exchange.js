@@ -70,38 +70,28 @@ module.exports = function oanda (conf) {
       }
 
       const symbol = joinProduct(opts.product_id)
-      client.fetchTrades(symbol, startTime, undefined, args).then(result => {
-
-        if (result.length === 0 && opts.from) {
-          // client.fetchTrades() only returns trades in an 1 hour interval.
-          // So we use fetchOHLCV() to detect trade appart from more than 1h.
-          // Note: it's done only in forward mode.
-          const time_diff = client.options['timeDifference']
-          if (startTime + time_diff < (new Date()).getTime() - 3600000) {
-            // startTime is older than 1 hour ago.
-            return client.fetchOHLCV(symbol, undefined, startTime)
-              .then(ohlcv => {
-                return ohlcv.length ? client.fetchTrades(symbol, ohlcv[0][0]) : []
-              })
+      client.fetchTrades(symbol).then((result) => {
+        let trades = result.map((trade) => {
+          let tradeTimestamp = Date.parse(trade.closeTime || trade.openTime)
+          if((opts.from && opts.from <= tradeTimestamp) ||
+            (opts.to && tradeTimestamp >= opts.to)){
+            return {
+              trade_id: trade.id,
+              time: Date.parse(trade.closeTime || trade.openTime),
+              size: Math.abs(parseFloat(trade.initialUnits)),
+              price: parseFloat(trade.price),
+              side: parseFloat(trade.initialUnits) < 0 ? 'sell' : 'buy'
+            }
           }
-        }
-        return result
-      }).then(result => {
-        var trades = result.map(trade => ({
-          trade_id: trade.id,
-          time: trade.timestamp,
-          size: parseFloat(trade.amount),
-          price: parseFloat(trade.price),
-          side: trade.side
-        }))
+        })
         cb(null, trades)
       }).catch(function (error) {
         console.error('An error occurred', error)
         return retry('getTrades', func_args)
       })
-
     },
 
+    /*TODO: I am here*/
     getBalance: function (opts, cb) {
       var func_args = [].slice.call(arguments)
       var client = authedClient()
