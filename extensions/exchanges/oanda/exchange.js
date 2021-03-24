@@ -57,6 +57,7 @@ module.exports = function oanda (conf) {
       return require('./products.json')
     },
 
+    /** TODO: reimplement - it should return old data candles **/
     getTrades: function (opts, cb) {
       let func_args = [].slice.call(arguments)
       let client = authedClient()
