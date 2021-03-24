@@ -157,7 +157,6 @@ module.exports = function oanda (conf) {
       })
     },
 
-    /** I am here **/
     buy: function (opts, cb) {
       let func_args = [].slice.call(arguments)
       let client = authedClient()
@@ -170,9 +169,10 @@ module.exports = function oanda (conf) {
       let args = Object.create(opts)
       delete args.type
       delete args.side
+      delete args.size
       delete args.price
       let order = {}
-      client.createOrder(joinProduct(opts.product_id), opts.type, opts.side, opts.price, args).then((result) => {
+      client.createOrder(joinProduct(opts.product_id), opts.type, opts.size, opts.price, args).then((result) => {
 
         order = {
           id: result.orderCreateTransaction.id,
@@ -210,64 +210,54 @@ module.exports = function oanda (conf) {
       if (typeof opts.post_only === 'undefined') {
         opts.post_only = true
       }
-      opts.type = 'limit'
-      let args = {}
-      if (opts.order_type === 'taker') {
-        delete opts.post_only
-        opts.type = 'market'
-      } else {
-        args.timeInForce = 'GTC'
-      }
+      opts.type = opts.type || 'market'
+      //for futures
       opts.side = 'sell'
-      delete opts.order_type
+      opts.size = -(opts.size)
+      let args = Object.create(opts)
+      delete args.type
+      delete args.side
+      delete args.size
+      delete args.price
       let order = {}
-      client.createOrder(joinProduct(opts.product_id), opts.type, opts.side, this.roundToNearest(opts.size, opts), opts.price, args).then(result => {
-        if (result && result.message === 'Insufficient funds') {
+      client.createOrder(joinProduct(opts.product_id), opts.type, opts.size, opts.price, args).then((result) => {
+
+        order = {
+          id: result.orderCreateTransaction.id,
+          status: 'open',
+          price: result.orderCreateTransaction.price,
+          size: result.orderCreateTransaction.units,
+          post_only: !!opts.post_only,
+          filled_size: '0',
+          created_at: Date.parse(result.orderCreateTransaction.time),
+          ordertype: opts.order_type
+        }
+
+        orders['~' + result.id] = order
+        cb(null, order)
+      }).catch(function (error) {
+
+        if (error.rejectReason && error.rejectReason === 'INSUFFICIENT_FUNDS') {
           order = {
             status: 'rejected',
             reject_reason: 'balance'
           }
           return cb(null, order)
         }
-        order = {
-          id: result ? result.id : null,
-          status: 'open',
-          price: opts.price,
-          size: this.roundToNearest(opts.size, opts),
-          post_only: !!opts.post_only,
-          created_at: new Date().getTime(),
-          filled_size: '0',
-          ordertype: opts.order_type
-        }
-        orders['~' + result.id] = order
-        cb(null, order)
-      }).catch(function (error) {
         console.error('An error occurred', error)
 
-        // decide if this error is allowed for a retry:
-        // {"code":-1013,"msg":"Filter failure: MIN_NOTIONAL"}
-        // {"code":-2010,"msg":"Account has insufficient balance for requested action"}
+        //TODO: decide when to retry or not
 
-        if (error.message.match(new RegExp(/-1013|MIN_NOTIONAL|-2010/))) {
-          return cb(null, {
-            status: 'rejected',
-            reject_reason: 'balance'
-          })
-        }
-
-        return retry('sell', func_args)
+        return retry('buy', func_args)
       })
     },
 
     /**TODO: implement  futures**/
-
-    roundToNearest: function(numToRound, opts) {
-      let numToRoundTo = _.find(this.getProducts(), { 'asset': opts.product_id.split('-')[0], 'currency': opts.product_id.split('-')[1] }).min_size
-      numToRoundTo = 1 / (numToRoundTo)
-
-      return Math.floor(numToRound * numToRoundTo) / numToRoundTo
+    close: function(opts, cb) {
+      return cb(null, null)
     },
 
+    /** I am  here**/
     getOrder: function (opts, cb) {
       let func_args = [].slice.call(arguments)
       let client = authedClient()
