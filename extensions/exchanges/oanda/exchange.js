@@ -1,4 +1,4 @@
-const {OandaApi} = require('./oanda')
+const {OandaApi, Granularity} = require('./oanda')
   , path = require('path')
   // eslint-disable-next-line no-unused-lets
   , colors = require('colors')
@@ -120,19 +120,18 @@ module.exports = function oanda (conf) {
       })
     },
 
-    /*TODO i am here*/
     getQuote: function (opts, cb) {
       let func_args = [].slice.call(arguments)
-      let client = publicClient()
-      client.fetchTicker(joinProduct(opts.product_id)).then(result => {
-        cb(null, { bid: result.bid, ask: result.ask })
+      let client = authedClient()
+      client.getPrice(opts.product_id, Granularity.MINUTES, 1, 1, 'MBA').then(result => {
+        cb(null, { bid: result.currentPrice.B.bid.c, ask: result.currentPrice.A.ask.c })
+      }).catch(function (error) {
+        console.error('An error occurred', error)
+        return retry('getQuote', func_args)
       })
-        .catch(function (error) {
-          console.error('An error occurred', error)
-          return retry('getQuote', func_args)
-        })
     },
 
+    /*TODO i am here*/
     getDepth: function (opts, cb) {
       let func_args = [].slice.call(arguments)
       let client = publicClient()

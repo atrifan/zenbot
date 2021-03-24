@@ -82,16 +82,32 @@ class OandaApi {
     return this.instruments
   }
 
-  async getPrice(symbol, timeFrame, granularity) {
-    const body = await this._getPriceNow(symbol, timeFrame, granularity)
-    if (!this.data) {
-      this.data = []
+  async getPrice(symbol, timeFrame, granularity, noBackCandles, format) {
+    const body = await this._getPriceNow(symbol, timeFrame, granularity, noBackCandles, format)
+    if (!this.price) {
+      this.price = {}
     }
 
-    body.candles.forEach((key) => {
-      this.data.push(new this.ctx.instrument.Candlestick(key))
+    console.log(body);
+    let data = format.split('').map((_,idx) => {
+      let result = []
+      body[idx].candles.forEach((key) => {
+        result.push(new this.ctx.instrument.Candlestick(key))
+      })
+      return  result
     })
-    return {candles: this.data, currentPrice: this.data[this.data.length - 1]}
+
+    format.split('').forEach((key,idx)  => {
+      this.price[key] = data[idx]
+    })
+
+    let currentPrice = {}
+
+    format.split('').forEach((letter) => {
+      return currentPrice[letter] =  this.price[letter][this.price[letter].length-1]
+    })
+
+    return {candles: this.price, currentPrice: currentPrice}
 
   }
 
@@ -107,7 +123,7 @@ class OandaApi {
         if (res.statusCode === '200') {
           resolve(res.body)
         } else {
-          reject(res.body)
+          reject(JSON.parse(res.rawBody))
         }
       })
     })
@@ -118,7 +134,7 @@ class OandaApi {
         if (res.statusCode === '200') {
           resolve(res.body)
         } else {
-          reject(res.body)
+          reject(JSON.parse(res.rawBody))
         }
       })
     })
@@ -131,34 +147,46 @@ class OandaApi {
         if (res.statusCode === '200') {
           resolve(res.body)
         } else {
-          reject(res.body)
+          reject(JSON.parse(res.rawBody))
         }
       })
     })
   }
 
-  _getPricesFromTo(symbol, from, to, timeFrame, granularity) {
-    return new Promise((resolve, reject) => {
-      this.ctx.instrument.candles(symbol, {from: from, to: to, granularity: `${timeFrame}${granularity}`}, (res) => {
-        if (res.statusCode === '200') {
-          resolve(res.body)
-        } else {
-          reject(res.body)
-        }
+  _getPricesFromTo(symbol, from, to, timeFrame, granularity,  format='M') {
+    let promises = format.split('').map((priceFormat) => {
+      return new Promise((resolve, reject) => {
+        this.ctx.instrument.candles(symbol, {from: from, to: to, granularity: `${timeFrame}${granularity}`, price: priceFormat}, (res) => {
+          if (res.statusCode === '200') {
+            resolve(res.body)
+          } else {
+            reject(JSON.parse(res.rawBody))
+          }
+        })
       })
     })
+    return Promise.all(promises)
   }
 
-  _getPriceNow(symbol, timeFrame, granularity) {
-    return new Promise((resolve, reject) => {
-      this.ctx.instrument.candles(symbol, {count: 200, granularity: `${timeFrame}${granularity}`}, (res) => {
-        if (res.statusCode === '200') {
-          resolve(res.body)
-        } else {
-          reject(res.body)
-        }
+  _getPriceNow(symbol, timeFrame, granularity, noBackCandles=200,  format='M') {
+    let promises = format.split('').map((priceFormat) => {
+      return new Promise((resolve, reject) => {
+        this.ctx.instrument.candles(symbol, {
+          count: noBackCandles,
+          granularity: `${timeFrame}${granularity}`,
+          price: priceFormat
+        }, (res) => {
+          if (res.statusCode === '200') {
+            resolve(res.body)
+          } else {
+            console.log(res)
+            reject(JSON.parse(res.rawBody))
+          }
+        })
       })
     })
+
+    return Promise.all(promises)
   }
 
   _log(data) {
@@ -170,7 +198,7 @@ class OandaApi {
 }
 
 let oApi = new OandaApi()
-oApi.syncAccount().then((data) => {
+oApi.getPrice('WTICO_USD', Granularity.MINUTES, 1, 1, 'MBA').then((data) => {
   oApi._log(data)
 })
 exports.OandaApi = OandaApi
