@@ -33,7 +33,8 @@ class OandaApi {
 
   async syncAccount() {
     const body = await this._getAccount()
-    this.account = new this.ctx.Account(body.account)
+    this.account = new this.ctx.account.Account(
+      body.account)
     return this.account
   }
 
@@ -169,6 +170,8 @@ class OandaApi {
 }
 
 let oApi = new OandaApi()
-oApi.fetchTrades('WTICO_USD').then((data)=>{console.log(data)})
+oApi.syncAccount().then((data) => {
+  oApi._log(data)
+})
 exports.OandaApi = OandaApi
 exports.Granularity = Granularity

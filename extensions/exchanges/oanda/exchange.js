@@ -1,11 +1,11 @@
 const {OandaApi} = require('./oanda')
   , path = require('path')
-  // eslint-disable-next-line no-unused-vars
+  // eslint-disable-next-line no-unused-lets
   , colors = require('colors')
   , _ = require('lodash')
 
 module.exports = function oanda (conf) {
-  var public_client, authed_client
+  let public_client, authed_client
 
   function publicClient () {
     if (!public_client) public_client = new OandaApi();
@@ -44,9 +44,9 @@ module.exports = function oanda (conf) {
     }, 20000)
   }
 
-  var orders = {}
+  let orders = {}
 
-  var exchange = {
+  let exchange = {
     name: 'oanda',
     historyScan: 'forward',
     historyScanUsesTime: true,
@@ -58,14 +58,15 @@ module.exports = function oanda (conf) {
     },
 
     getTrades: function (opts, cb) {
-      var func_args = [].slice.call(arguments)
-      var client = publicClient()
-      var startTime = null
-      var args = {}
+      let func_args = [].slice.call(arguments)
+      let client = authedClient()
+      let startTime = null
+      let args = {}
       if (opts.from) {
         startTime = opts.from
       } else {
         startTime = parseInt(opts.to, 10) - 3600000
+        opts.from = startTime
         args['endTime'] = opts.to
       }
 
@@ -91,33 +92,38 @@ module.exports = function oanda (conf) {
       })
     },
 
-    /*TODO: I am here*/
     getBalance: function (opts, cb) {
-      var func_args = [].slice.call(arguments)
-      var client = authedClient()
-      client.fetchBalance().then(result => {
-        var balance = {asset: 0, currency: 0}
-        Object.keys(result).forEach(function (key) {
-          if (key === opts.currency) {
-            balance.currency = result[key].free + result[key].used
-            balance.currency_hold = result[key].used
-          }
-          if (key === opts.asset) {
-            balance.asset = result[key].free + result[key].used
-            balance.asset_hold = result[key].used
+      let func_args = [].slice.call(arguments)
+      let client = authedClient()
+      client.syncAccount().then((account) => {
+        let balance = {asset: 0, currency: 0}
+        if(account.currency === opts.currency) {
+          balance.currency = account.NAV
+          balance.currency_hold = account.NAV - account.balance
+        }
+
+        let values = account.trades.map((trade) => {
+          if(trade.instrument.includes(opts.asset)) {
+            return trade.currentUnits
           }
         })
+
+        for(let i = 0, len = length(values); i < len; i++) {
+          balance.asset += values[i]
+        }
+
+        balance.asset_hold = balance.asset
         cb(null, balance)
+      }).catch(function (error) {
+        console.error('An error occurred', error)
+        return retry('getBalance', func_args)
       })
-        .catch(function (error) {
-          console.error('An error occurred', error)
-          return retry('getBalance', func_args)
-        })
     },
 
+    /*TODO i am here*/
     getQuote: function (opts, cb) {
-      var func_args = [].slice.call(arguments)
-      var client = publicClient()
+      let func_args = [].slice.call(arguments)
+      let client = publicClient()
       client.fetchTicker(joinProduct(opts.product_id)).then(result => {
         cb(null, { bid: result.bid, ask: result.ask })
       })
@@ -128,8 +134,8 @@ module.exports = function oanda (conf) {
     },
 
     getDepth: function (opts, cb) {
-      var func_args = [].slice.call(arguments)
-      var client = publicClient()
+      let func_args = [].slice.call(arguments)
+      let client = publicClient()
       client.fetchOrderBook(joinProduct(opts.product_id), {limit: opts.limit}).then(result => {
         cb(null, result)
       })
@@ -140,8 +146,8 @@ module.exports = function oanda (conf) {
     },
 
     cancelOrder: function (opts, cb) {
-      var func_args = [].slice.call(arguments)
-      var client = authedClient()
+      let func_args = [].slice.call(arguments)
+      let client = authedClient()
       client.cancelOrder(opts.order_id, joinProduct(opts.product_id)).then(function (body) {
         if (body && (body.message === 'Order already done' || body.message === 'order not found')) return cb()
         cb(null)
@@ -166,13 +172,13 @@ module.exports = function oanda (conf) {
     },
 
     buy: function (opts, cb) {
-      var func_args = [].slice.call(arguments)
-      var client = authedClient()
+      let func_args = [].slice.call(arguments)
+      let client = authedClient()
       if (typeof opts.post_only === 'undefined') {
         opts.post_only = true
       }
       opts.type = 'limit'
-      var args = {}
+      let args = {}
       if (opts.order_type === 'taker') {
         delete opts.post_only
         opts.type = 'market'
@@ -181,7 +187,7 @@ module.exports = function oanda (conf) {
       }
       opts.side = 'buy'
       delete opts.order_type
-      var order = {}
+      let order = {}
       client.createOrder(joinProduct(opts.product_id), opts.type, opts.side, this.roundToNearest(opts.size, opts), opts.price, args).then(result => {
         if (result && result.message === 'Insufficient funds') {
           order = {
@@ -221,13 +227,13 @@ module.exports = function oanda (conf) {
     },
 
     sell: function (opts, cb) {
-      var func_args = [].slice.call(arguments)
-      var client = authedClient()
+      let func_args = [].slice.call(arguments)
+      let client = authedClient()
       if (typeof opts.post_only === 'undefined') {
         opts.post_only = true
       }
       opts.type = 'limit'
-      var args = {}
+      let args = {}
       if (opts.order_type === 'taker') {
         delete opts.post_only
         opts.type = 'market'
@@ -236,7 +242,7 @@ module.exports = function oanda (conf) {
       }
       opts.side = 'sell'
       delete opts.order_type
-      var order = {}
+      let order = {}
       client.createOrder(joinProduct(opts.product_id), opts.type, opts.side, this.roundToNearest(opts.size, opts), opts.price, args).then(result => {
         if (result && result.message === 'Insufficient funds') {
           order = {
@@ -276,16 +282,16 @@ module.exports = function oanda (conf) {
     },
 
     roundToNearest: function(numToRound, opts) {
-      var numToRoundTo = _.find(this.getProducts(), { 'asset': opts.product_id.split('-')[0], 'currency': opts.product_id.split('-')[1] }).min_size
+      let numToRoundTo = _.find(this.getProducts(), { 'asset': opts.product_id.split('-')[0], 'currency': opts.product_id.split('-')[1] }).min_size
       numToRoundTo = 1 / (numToRoundTo)
 
       return Math.floor(numToRound * numToRoundTo) / numToRoundTo
     },
 
     getOrder: function (opts, cb) {
-      var func_args = [].slice.call(arguments)
-      var client = authedClient()
-      var order = orders['~' + opts.order_id]
+      let func_args = [].slice.call(arguments)
+      let client = authedClient()
+      let order = orders['~' + opts.order_id]
       client.fetchOrder(opts.order_id, joinProduct(opts.product_id)).then(function (body) {
         if (body.status !== 'open' && body.status !== 'canceled') {
           order.status = 'done'
