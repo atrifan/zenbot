@@ -140,6 +140,20 @@ class OandaApi {
     })
   }
 
+  /** oanda not working **/
+  _getOrderBook(symbol, year,  month,  day, hour = 0, minute  = 0, second = 0) {
+    return new  Promise((resolve, reject) => {
+      this.ctx.instrument.orderBook(symbol,  {time: (Date.UTC(year, month, day, hour, minute, second) / 1000)}, (res) => {
+        if(res.statusCode === '200') {
+          this._log(res)
+          resolve(res.body)
+        } else {
+          this._log(res);
+          reject(res.body)
+        }
+      })
+    })
+  }
 
   _getAccount() {
     return new Promise((resolve, reject) => {
@@ -198,7 +212,7 @@ class OandaApi {
 }
 
 let oApi = new OandaApi()
-oApi.getPrice('WTICO_USD', Granularity.MINUTES, 1, 1, 'MBA').then((data) => {
+oApi._getOrderBook('XAG_USD', 2019, 10, 5).then((data) => {
   oApi._log(data)
 })
 exports.OandaApi = OandaApi

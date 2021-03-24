@@ -123,7 +123,7 @@ module.exports = function oanda (conf) {
     getQuote: function (opts, cb) {
       let func_args = [].slice.call(arguments)
       let client = authedClient()
-      client.getPrice(opts.product_id, Granularity.MINUTES, 1, 1, 'MBA').then(result => {
+      client.getPrice(joinProduct(opts.product_id), Granularity.MINUTES, 1, 1, 'MBA').then(result => {
         cb(null, { bid: result.currentPrice.B.bid.c, ask: result.currentPrice.A.ask.c })
       }).catch(function (error) {
         console.error('An error occurred', error)
@@ -131,19 +131,19 @@ module.exports = function oanda (conf) {
       })
     },
 
-    /*TODO i am here*/
+    /*WARNING oanda not working api for orderBook*/
     getDepth: function (opts, cb) {
       let func_args = [].slice.call(arguments)
-      let client = publicClient()
-      client.fetchOrderBook(joinProduct(opts.product_id), {limit: opts.limit}).then(result => {
+      let client = authedClient()
+      client._getOrderBook(joinProduct(opts.product_id), opts.year,  opts.month, opts.day,  opts.hour, opts.minute, opts.second).then(result => {
         cb(null, result)
+      }).catch(function(error) {
+        console.error('An error ocurred', error)
+        return retry('getDepth', func_args)
       })
-        .catch(function(error) {
-          console.error('An error ocurred', error)
-          return retry('getDepth', func_args)
-        })
     },
 
+    /** I am here **/
     cancelOrder: function (opts, cb) {
       let func_args = [].slice.call(arguments)
       let client = authedClient()
