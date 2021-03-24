@@ -1,11 +1,26 @@
 const {Context} = require('@oanda/v20/context')
+const {MarketOrderRequest, LimitOrderRequest, StopOrderRequest, MarketIfTouchedOrderRequest,
+  TakeProfitOrderRequest, StopLossOrderRequest, TrailingStopLossOrderRequest} = require('@oanda/v20/order')
 const path = require('path')
 
 const Granularity = {
   HOURS: 'H',
   MINUTES: 'M',
   SECONDS: 'S',
-  DAYS: 'D'
+  DAYS: 'D',
+}
+
+const OrderType = {
+  LIMIT: LimitOrderRequest,
+  MARKET: MarketOrderRequest,
+  STOP: StopOrderRequest,
+  MARKET_IF_TOUCHED_ORDER: MarketIfTouchedOrderRequest,
+  TAKE_PROFIT: TakeProfitOrderRequest,
+  STOP_LOSS: StopLossOrderRequest,
+  TRAILING_STOP_LOSS: TrailingStopLossOrderRequest,
+  getFromString: (str) => {
+    return OrderType[str.toUpperCase()]
+  }
 }
 
 class OandaApi {
@@ -82,6 +97,18 @@ class OandaApi {
     return this.instruments
   }
 
+  async buy(symbol, type, size, price, args) {
+    let creationOrderData = args || {}
+    creationOrderData.instrument = symbol
+    creationOrderData.units = size
+    creationOrderData.price = price
+    let orderRequest = new (OrderType.getFromString(type))(creationOrderData)
+    let body = await this._buy(orderRequest)
+    this._log(body)
+    /*TODO: args.post_only == false - poll for execution*/
+    return new this.ctx
+  }
+
   async getPrice(symbol, timeFrame, granularity, noBackCandles, format) {
     const body = await this._getPriceNow(symbol, timeFrame, granularity, noBackCandles, format)
     if (!this.price) {
@@ -141,9 +168,9 @@ class OandaApi {
   }
 
   /** oanda not working **/
-  _getOrderBook(symbol, year,  month,  day, hour = 0, minute  = 0, second = 0) {
+  _getOrderBook(symbol, time) {
     return new  Promise((resolve, reject) => {
-      this.ctx.instrument.orderBook(symbol,  {time: (Date.UTC(year, month, day, hour, minute, second) / 1000)}, (res) => {
+      this.ctx.instrument.orderBook(symbol,  {time: time}, (res) => {
         if(res.statusCode === '200') {
           this._log(res)
           resolve(res.body)
@@ -215,17 +242,31 @@ class OandaApi {
     })
   }
 
+  _buy(orderRequest) {
+    return new Promise((resolve, reject) => {
+      this.ctx.order.create(this.accountId, {order: orderRequest}, (res) => {
+        if (res.statusCode === '201') {
+          resolve(res.body);
+        } else {
+          this._log(res)
+          reject(JSON.parse(res.rawBody))
+        }
+      })
+    })
+  }
+
   _log(data) {
     console.log(JSON.stringify(data, null, 4))
   }
-  _getDate(year, month, day) {
-    return Date.UTC(year, month, day) / 1000
+  _getDate(year, month, day, hour=0, minute=0, second=0) {
+    return Date.UTC(year, month, day, hour, minute, second) / 1000
   }
 }
 
 let oApi = new OandaApi()
-oApi._getOrderBook('XAG_USD', 2019, 10, 5).then((data) => {
-  oApi._log(data)
-})
+oApi.buy('WTICO_USD','market',1)
+
+
 exports.OandaApi = OandaApi
 exports.Granularity = Granularity
+exports.OrderType = OrderType

@@ -135,7 +135,7 @@ module.exports = function oanda (conf) {
     getDepth: function (opts, cb) {
       let func_args = [].slice.call(arguments)
       let client = authedClient()
-      client._getOrderBook(joinProduct(opts.product_id), opts.year,  opts.month, opts.day,  opts.hour, opts.minute, opts.second).then(result => {
+      client._getOrderBook(joinProduct(opts.product_id), client._getDate(opts.year,  opts.month, opts.day,  opts.hour, opts.minute, opts.second)).then(result => {
         cb(null, result)
       }).catch(function(error) {
         console.error('An error ocurred', error)
@@ -164,50 +164,41 @@ module.exports = function oanda (conf) {
       if (typeof opts.post_only === 'undefined') {
         opts.post_only = true
       }
-      opts.type = 'limit'
-      let args = {}
-      if (opts.order_type === 'taker') {
-        delete opts.post_only
-        opts.type = 'market'
-      } else {
-        args.timeInForce = 'GTC'
-      }
-      opts.side = 'buy'
-      delete opts.order_type
+      opts.type = opts.type || 'market'
+      //for futures
+      opts.side = opts.side || 'buy'
+      let args = Object.create(opts)
+      delete args.type
+      delete args.side
+      delete args.price
       let order = {}
-      client.createOrder(joinProduct(opts.product_id), opts.type, opts.side, this.roundToNearest(opts.size, opts), opts.price, args).then(result => {
-        if (result && result.message === 'Insufficient funds') {
+      client.createOrder(joinProduct(opts.product_id), opts.type, opts.side, opts.price, args).then((result) => {
+
+        order = {
+          id: result.orderCreateTransaction.id,
+          status: 'open',
+          price: result.orderCreateTransaction.price,
+          size: result.orderCreateTransaction.units,
+          post_only: !!opts.post_only,
+          filled_size: '0',
+          created_at: Date.parse(result.orderCreateTransaction.time),
+          ordertype: opts.order_type
+        }
+
+        orders['~' + result.id] = order
+        cb(null, order)
+      }).catch(function (error) {
+
+        if (error.rejectReason && error.rejectReason === 'INSUFFICIENT_FUNDS') {
           order = {
             status: 'rejected',
             reject_reason: 'balance'
           }
           return cb(null, order)
         }
-        order = {
-          id: result ? result.id : null,
-          status: 'open',
-          price: opts.price,
-          size: this.roundToNearest(opts.size, opts),
-          post_only: !!opts.post_only,
-          created_at: new Date().getTime(),
-          filled_size: '0',
-          ordertype: opts.order_type
-        }
-        orders['~' + result.id] = order
-        cb(null, order)
-      }).catch(function (error) {
         console.error('An error occurred', error)
 
-        // decide if this error is allowed for a retry:
-        // {"code":-1013,"msg":"Filter failure: MIN_NOTIONAL"}
-        // {"code":-2010,"msg":"Account has insufficient balance for requested action"}
-
-        if (error.message.match(new RegExp(/-1013|MIN_NOTIONAL|-2010/))) {
-          return cb(null, {
-            status: 'rejected',
-            reject_reason: 'balance'
-          })
-        }
+        //TODO: decide when to retry or not
 
         return retry('buy', func_args)
       })
