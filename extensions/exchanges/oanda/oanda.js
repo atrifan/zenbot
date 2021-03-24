@@ -203,6 +203,18 @@ class OandaApi {
     return Promise.all(promises)
   }
 
+  _cancelOrder(orderId) {
+    return new Promise((resolve, reject) => {
+      this.ctx.order.cancel(this.accountId, orderId, (res) => {
+        if (res.statusCode === '200') {
+          resolve(res.body)
+        } else {
+          reject(res)
+        }
+      })
+    })
+  }
+
   _log(data) {
     console.log(JSON.stringify(data, null, 4))
   }

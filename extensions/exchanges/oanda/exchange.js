@@ -143,33 +143,21 @@ module.exports = function oanda (conf) {
       })
     },
 
-    /** I am here **/
     cancelOrder: function (opts, cb) {
       let func_args = [].slice.call(arguments)
       let client = authedClient()
-      client.cancelOrder(opts.order_id, joinProduct(opts.product_id)).then(function (body) {
-        if (body && (body.message === 'Order already done' || body.message === 'order not found')) return cb()
-        cb(null)
-      }, function(err){
-        // match error against string:
-        // "binance {"code":-2011,"msg":"UNKNOWN_ORDER"}"
-
-        if (err) {
-          // decide if this error is allowed for a retry
-
-          if (err.message && err.message.match(new RegExp(/-2011|UNKNOWN_ORDER/))) {
-            console.error(('\ncancelOrder retry - unknown Order: ' + JSON.stringify(opts) + ' - ' + err).cyan)
-          } else {
-            // retry is allowed for this error
-
-            return retry('cancelOrder', func_args, err)
-          }
+      client._cancelOrder(opts.order_id, joinProduct(opts.product_id)).then((body) => {
+        cb(null, body)
+      }).catch((err) => {
+        cb._log(err);
+        if(err.statusCode !== '404') {
+          return retry('cancelOrder', func_args, err)
         }
-
         cb()
       })
     },
 
+    /** I am here **/
     buy: function (opts, cb) {
       let func_args = [].slice.call(arguments)
       let client = authedClient()
@@ -279,6 +267,8 @@ module.exports = function oanda (conf) {
         return retry('sell', func_args)
       })
     },
+
+    /**TODO: implement  futures**/
 
     roundToNearest: function(numToRound, opts) {
       let numToRoundTo = _.find(this.getProducts(), { 'asset': opts.product_id.split('-')[0], 'currency': opts.product_id.split('-')[1] }).min_size
