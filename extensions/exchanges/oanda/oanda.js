@@ -97,6 +97,11 @@ class OandaApi {
     return this.instruments
   }
 
+  async closeTrade(tradeId, units='ALL') {
+    let body = await this._closeTrade(tradeId, units)
+    return body
+  }
+
   async buy(symbol, type, size, price, args) {
     let creationOrderData = args || {}
     creationOrderData.instrument = symbol
@@ -106,16 +111,20 @@ class OandaApi {
     let body = await this._buy(orderRequest)
     this._log(body)
     /*TODO: args.post_only == false - poll for execution*/
-    return new this.ctx
+    return body
   }
 
+  async getOrder(orderId) {
+    let body = await this._getOrder(orderId)
+    return body
+  }
   async getPrice(symbol, timeFrame, granularity, noBackCandles, format) {
     const body = await this._getPriceNow(symbol, timeFrame, granularity, noBackCandles, format)
     if (!this.price) {
       this.price = {}
     }
 
-    console.log(body);
+    console.log(body)
     let data = format.split('').map((_,idx) => {
       let result = []
       body[idx].candles.forEach((key) => {
@@ -136,6 +145,31 @@ class OandaApi {
 
     return {candles: this.price, currentPrice: currentPrice}
 
+  }
+
+  _getOrder(orderId) {
+    return new Promise((resolve, reject) => {
+      this.ctx.order.get(this.accountId, orderId, (res) => {
+        if(res.statusCode === '200') {
+          resolve(res.body)
+        } else {
+          this._log(res)
+          reject(JSON.parse(res.rawBody))
+        }
+      })
+    })
+  }
+  _closeTrade(tradeId, units) {
+    return new Promise((resolve, reject) => {
+      this.ctx.trade.close(this.accountId, tradeId, {units: units}, (res) => {
+        if (res.statusCode === '200') {
+          resolve(res.body)
+        } else {
+          this._log(res)
+          reject(JSON.parse(res.rawBody))
+        }
+      })
+    })
   }
 
   _fetchTrades(symbol, state, count, beforeId) {
@@ -176,7 +210,7 @@ class OandaApi {
           resolve(res.body)
         } else {
           this._log(res);
-          reject(res.body)
+          reject(JSON.parse(res.rawBody))
         }
       })
     })
@@ -246,7 +280,7 @@ class OandaApi {
     return new Promise((resolve, reject) => {
       this.ctx.order.create(this.accountId, {order: orderRequest}, (res) => {
         if (res.statusCode === '201') {
-          resolve(res.body);
+          resolve(res.body)
         } else {
           this._log(res)
           reject(JSON.parse(res.rawBody))
@@ -264,7 +298,21 @@ class OandaApi {
 }
 
 let oApi = new OandaApi()
-oApi.buy('WTICO_USD','market',1)
+oApi.buy('XCU_USD','market',1).then((data) => {
+  console.log(data)
+  setTimeout(() => {
+    oApi.getOrder(data.orderCreateTransaction.id).then((data) => {
+      console.log('###')
+      console.log(data)
+      if(data.order.state === 'FILLED') {
+        oApi.closeTrade(data.order.tradeOpenedID).then((data) => {
+          console.log('$$$$')
+          console.log(data)
+        })
+      }
+    })
+  }, 5000)
+})
 
 
 exports.OandaApi = OandaApi

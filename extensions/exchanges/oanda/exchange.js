@@ -57,7 +57,6 @@ module.exports = function oanda (conf) {
       return require('./products.json')
     },
 
-    /** TODO: reimplement - it should return old data candles **/
     getTrades: function (opts, cb) {
       let func_args = [].slice.call(arguments)
       let client = authedClient()
@@ -172,11 +171,20 @@ module.exports = function oanda (conf) {
       delete args.side
       delete args.size
       delete args.price
-      let order = {}
-      client.createOrder(joinProduct(opts.product_id), opts.type, opts.size, opts.price, args).then((result) => {
+      client.buy(joinProduct(opts.product_id), opts.type, opts.size, opts.price, args).then((result) => {
 
-        order = {
-          id: result.orderCreateTransaction.id,
+        if(result.orderCancelTransaction && (result.orderCancelTransaction.reason === 'INSUFFICIENT_MARGIN' ||
+          result.orderCancelTransaction.reason === 'INSUFFICIENT_LIQUIDITY')) {
+          return cb(null, {
+            status: 'rejected',
+            reject_reason: 'balance'
+          })
+        }
+        if(result.orderCancelTransaction && result.orderCancelTransaction.reason === 'MARKET_HALTED') {
+          return retry('buy', func_args)
+        }
+        let order = {
+          id: result.orderCreateTransaction.clientExtensions.id,
           status: 'open',
           price: result.orderCreateTransaction.price,
           size: result.orderCreateTransaction.units,
@@ -186,12 +194,12 @@ module.exports = function oanda (conf) {
           ordertype: opts.order_type
         }
 
-        orders['~' + result.id] = order
+        orders['~' + order.id] = order
         cb(null, order)
       }).catch(function (error) {
 
         if (error.rejectReason && error.rejectReason === 'INSUFFICIENT_FUNDS') {
-          order = {
+          let order = {
             status: 'rejected',
             reject_reason: 'balance'
           }
@@ -220,11 +228,20 @@ module.exports = function oanda (conf) {
       delete args.side
       delete args.size
       delete args.price
-      let order = {}
-      client.createOrder(joinProduct(opts.product_id), opts.type, opts.size, opts.price, args).then((result) => {
+      client.buy(joinProduct(opts.product_id), opts.type, opts.size, opts.price, args).then((result) => {
 
-        order = {
-          id: result.orderCreateTransaction.id,
+        if(result.orderCancelTransaction && (result.orderCancelTransaction.reason === 'INSUFFICIENT_MARGIN' ||
+          result.orderCancelTransaction.reason === 'INSUFFICIENT_LIQUIDITY')) {
+          return cb(null, {
+            status: 'rejected',
+            reject_reason: 'balance'
+          })
+        }
+        if(result.orderCancelTransaction && result.orderCancelTransaction.reason === 'MARKET_HALTED') {
+          return retry('sell', func_args)
+        }
+        let order = {
+          id: result.orderCreateTransaction.clientExtensions.id,
           status: 'open',
           price: result.orderCreateTransaction.price,
           size: result.orderCreateTransaction.units,
@@ -234,12 +251,12 @@ module.exports = function oanda (conf) {
           ordertype: opts.order_type
         }
 
-        orders['~' + result.id] = order
+        orders['~' + order.id] = order
         cb(null, order)
       }).catch(function (error) {
 
         if (error.rejectReason && error.rejectReason === 'INSUFFICIENT_FUNDS') {
-          order = {
+          let order = {
             status: 'rejected',
             reject_reason: 'balance'
           }
@@ -249,13 +266,20 @@ module.exports = function oanda (conf) {
 
         //TODO: decide when to retry or not
 
-        return retry('buy', func_args)
+        return retry('sell', func_args)
       })
     },
 
-    /**TODO: implement  futures**/
     close: function(opts, cb) {
-      return cb(null, null)
+      let func_args = [].slice.call(arguments)
+      let client = authedClient()
+
+      client.closeTrade(joinProduct(opts.product_id),opts.units).then((result) => {
+        cb(null, result)
+      }).catch((err) => {
+        client._log(err);
+        return retry('close', func_args)
+      })
     },
 
     /** I am  here**/
