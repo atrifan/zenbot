@@ -49,6 +49,12 @@ c.binance = {}
 c.binance.key = process.env.ZENBOT_BINANCE_API_KEY || 'YOUR-API-KEY'
 c.binance.secret = process.env.ZENBOT_BINANCE_SECRET || 'YOUR-API-SECRET'
 
+//to enable Oanda trading enter your API credentials:
+c.oanda = {}
+c.oanda.token = process.env.ZENBOT_OANDA_TOKEN || 'YOUR_TOKEN'
+c.oanda.account = process.env.ZENBOT_OANDA_ACCOUNT || 'YOUR_ACCOUNT'
+c.oanda.practice = process.env.ZENBOT_OANDA_PRACTICE || true
+
 // to enable Binance US trading, enter your API credentials:
 c.binanceus = {}
 c.binanceus.key = 'YOUR-API-KEY'
