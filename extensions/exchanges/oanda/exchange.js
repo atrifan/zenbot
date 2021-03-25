@@ -57,7 +57,12 @@ module.exports = function oanda (conf) {
       return require('./products.json')
     },
 
-    getTrades: function (opts, cb) {
+    /**have to implement**/
+    getTrades: function(opts, cb) {
+
+    },
+
+    getClientTrades: function (opts, cb) {
       let func_args = [].slice.call(arguments)
       let client = authedClient()
       let startTime = null
@@ -184,14 +189,17 @@ module.exports = function oanda (conf) {
           return retry('buy', func_args)
         }
         let order = {
+          symbol: opts.product_id,
           id: result.orderCreateTransaction.clientExtensions.id,
-          status: 'open',
+          status: result.orderFillTransaction && result.orderFillTransaction.tradeOpened ? 'done' : 'open',
+          done_at: result.orderFillTransaction && result.orderFillTransaction.tradeOpened ? Date.parse(result.orderFillTransaction.time) : null,
           price: result.orderCreateTransaction.price,
           size: result.orderCreateTransaction.units,
           post_only: !!opts.post_only,
           filled_size: '0',
           created_at: Date.parse(result.orderCreateTransaction.time),
-          ordertype: opts.order_type
+          ordertype: opts.order_type,
+          tradeID: result.orderFillTransaction && result.orderFillTransaction.tradeOpened ? result.orderFillTransaction.tradeOpened.tradeID : null
         }
 
         orders['~' + order.id] = order
@@ -241,14 +249,17 @@ module.exports = function oanda (conf) {
           return retry('sell', func_args)
         }
         let order = {
+          symbol: opts.product_id,
           id: result.orderCreateTransaction.clientExtensions.id,
-          status: 'open',
+          status: result.orderFillTransaction && result.orderFillTransaction.tradeOpened ? 'done' : 'open',
+          done_at: result.orderFillTransaction && result.orderFillTransaction.tradeOpened ? Date.parse(result.orderFillTransaction.time) : null,
           price: result.orderCreateTransaction.price,
           size: result.orderCreateTransaction.units,
           post_only: !!opts.post_only,
           filled_size: '0',
           created_at: Date.parse(result.orderCreateTransaction.time),
-          ordertype: opts.order_type
+          ordertype: opts.order_type,
+          tradeID: result.orderFillTransaction && result.orderFillTransaction.tradeOpened ? result.orderFillTransaction.tradeOpened.tradeID : null
         }
 
         orders['~' + order.id] = order
@@ -274,24 +285,32 @@ module.exports = function oanda (conf) {
       let func_args = [].slice.call(arguments)
       let client = authedClient()
 
-      client.closeTrade(joinProduct(opts.product_id),opts.units).then((result) => {
-        cb(null, result)
+      let order = orders['~' + opts.order_id]
+      if(!order.tradeID) {
+        return retry('close', func_args)
+      }
+
+      client.closeTrade(order.tradeID, opts.units).then((result) => {
+        order.status = result.orderFillTransaction ? 'close': 'pending_close'
+        order.close_start = result.orderCreateTransaction? Date.parse(result.orderCreateTransaction.time) : null
+        order.close_at = result.orderFillTransaction? Date.parse(result.orderFillTransaction.time): null
+        cb(null, order)
       }).catch((err) => {
-        client._log(err);
+        client._log(err)
         return retry('close', func_args)
       })
     },
 
-    /** I am  here**/
     getOrder: function (opts, cb) {
       let func_args = [].slice.call(arguments)
       let client = authedClient()
       let order = orders['~' + opts.order_id]
       client.fetchOrder(opts.order_id, joinProduct(opts.product_id)).then(function (body) {
-        if (body.status !== 'open' && body.status !== 'canceled') {
+        if (body.order.state !== 'PENDING' && body.order.status !== 'CANCELLED' && body.order.status !== 'TRIGGERED') {
           order.status = 'done'
-          order.done_at = new Date().getTime()
-          order.filled_size = parseFloat(body.amount) - parseFloat(body.remaining)
+          order.done_at = Date.parse(body.order.filledTime)
+          order.tradeID = body.order.tradeOpenedID
+          order.filled_size = parseFloat(body.order.units)
           return cb(null, order)
         }
         cb(null, order)
