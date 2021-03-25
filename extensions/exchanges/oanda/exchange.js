@@ -162,7 +162,8 @@ module.exports = function oanda (conf) {
           }
         })
 
-        for(let i = 0, len = length(values); i < len; i++) {
+
+        for(let i = 0, len = values.length; i < len; i++) {
           balance.asset += values[i]
         }
 
