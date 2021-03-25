@@ -6,12 +6,8 @@ const {OandaApi, Granularity} = require('./oanda')
   , _ = require('lodash')
 
 module.exports = function oanda (conf) {
-  let public_client, authed_client
+  let authed_client
 
-  function publicClient () {
-    if (!public_client) public_client = new OandaApi();
-    return public_client
-  }
 
   function authedClient () {
     if (!authed_client) {
@@ -75,7 +71,7 @@ module.exports = function oanda (conf) {
       opts.from = opts.from ? opts.from / 1000 : null
       opts.to = opts.to ? opts.to / 1000 : null
       const symbol = joinProduct(opts.product_id)
-      client.getPricesFromTo(symbol, opts.from, opts.to, 'S', 5, 'BA').then((result) => {
+      client.getPricesFromTo(symbol, opts.from, opts.to, opts.timeframe, opts.granularity, 'BA').then((result) => {
         let trades_buy = result.B.map((trade) => {
           return {
             trade_id: v4(),
@@ -94,7 +90,11 @@ module.exports = function oanda (conf) {
             side: 'sell'
           }
         })
-        let trades = trades_buy.concat(trades_sell)
+        let trades = []
+        for(let i = 0, len = trades_buy.length; i < len; i++) {
+          trades.push(trades_buy[i])
+          trades.push(trades_sell[i])
+        }
         cb(null, trades)
       }).catch((err) => {
         console.error('An error occurred', err)

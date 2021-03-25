@@ -8,6 +8,23 @@ const Granularity = {
   MINUTES: 'M',
   SECONDS: 'S',
   DAYS: 'D',
+  getTimeFromString: (str) => {
+    if (str === Granularity.HOURS) {
+      return 60 * 60
+    }
+
+    if (str === Granularity.MINUTES) {
+      return 60
+    }
+
+    if (str === Granularity.DAYS) {
+      return 60 * 60 * 24
+    }
+
+    if (str === Granularity.SECONDS) {
+      return 1
+    }
+  }
 }
 
 const OrderType = {
@@ -147,20 +164,56 @@ class OandaApi {
   }
 
   async getPricesFromTo(symbol, from, to, timeFrame, granularity, format) {
-    const body = await this._getPricesFromTo(symbol, from, to, timeFrame, granularity, format)
+    if(to == null) {
+      let current_date = new Date();
+      let current_date_utc = current_date.getTime() + current_date.getTimezoneOffset()
+      to = current_date_utc / 1000
+    }
+
     let prices = {}
-    let data = format.split('').map((_,idx) => {
-      let result = []
-      body[idx].candles.forEach((key) => {
-        result.push(new this.ctx.instrument.Candlestick(key))
+    if((to - from)/(Granularity.getTimeFromString(timeFrame) * granularity) <= 5000) {
+      const body = await this._getPricesFromTo(symbol, from, to, timeFrame, granularity, format)
+
+      let data = format.split('').map((_,idx) => {
+        let result = []
+        body[idx].candles.forEach((key) => {
+          result.push(new this.ctx.instrument.Candlestick(key))
+        })
+        return  result
       })
-      return  result
-    })
 
-    format.split('').forEach((key,idx)  => {
-      prices[key] = data[idx]
-    })
+      format.split('').forEach((key,idx)  => {
+        prices[key] = data[idx]
+      })
+      return prices
+    }
 
+    while((to - from)/(Granularity.getTimeFromString(timeFrame) * granularity) > 5000) {
+      let newTo = from + (Granularity.getTimeFromString(timeFrame) * granularity) * 5000
+      if(newTo > to) {
+        newTo = to
+      }
+      const body = await this._getPricesFromTo(symbol, from, newTo, timeFrame, granularity, format)
+
+      let data = format.split('').map((_,idx) => {
+        let result = []
+        body[idx].candles.forEach((key) => {
+          result.push(new this.ctx.instrument.Candlestick(key))
+        })
+        return  result
+      })
+
+      format.split('').forEach((key,idx)  => {
+        if(!prices[key]) {
+          prices[key] = data[idx]
+        } else {
+          prices[key] = prices[key].concat(data[idx])
+        }
+
+      })
+
+      from = newTo+1
+    }
 
     return prices
   }
@@ -247,11 +300,7 @@ class OandaApi {
   }
 
   _getPricesFromTo(symbol, from, to, timeFrame=Granularity.HOURS, granularity=1,  format='M') {
-    if(to == null) {
-      let current_date = new Date();
-      let current_date_utc = current_date.getTime() + current_date.getTimezoneOffset()
-      to = current_date_utc / 1000
-    }
+
     let promises = format.split('').map((priceFormat) => {
       return new Promise((resolve, reject) => {
         this.ctx.instrument.candles(symbol, {from: from, to: to, granularity: `${timeFrame}${granularity}`, price: priceFormat}, (res) => {
@@ -321,9 +370,11 @@ class OandaApi {
   }
 }
 
-// let oApi = new OandaApi()
-// oApi.getPricesFromTo('WTICO_USD', Date.UTC(2021,2,25, 8, 3, 0)/1000,
-//   Date.UTC(2021,2,25, 12, 30, 0)/1000, Granularity.HOURS, 1, 'BA')
+let oApi = new OandaApi()
+oApi.getPricesFromTo('WTICO_USD', Date.UTC(2021,1,25, 8, 3, 0)/1000,
+  Date.UTC(2021,2,25, 12, 30, 0)/1000, Granularity.MINUTES, 1, 'BA').then((data)=> {
+  console.log(data)
+})
 //   .then((data) => {oApi._log(data)})
 // oApi.buy('XCU_USD','market',1).then((data) => {
 //   console.log(data)
