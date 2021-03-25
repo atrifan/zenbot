@@ -124,6 +124,8 @@ class OandaApi {
     creationOrderData.instrument = symbol
     creationOrderData.units = size
     creationOrderData.price = price
+    type = type.toUpperCase()
+    args.type = args.type.toUpperCase()
     let orderRequest = new (OrderType.getFromString(type))(creationOrderData)
     let body = await this._buy(orderRequest)
     this._log(body)

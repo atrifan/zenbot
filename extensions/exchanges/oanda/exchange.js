@@ -222,12 +222,13 @@ module.exports = function oanda (conf) {
       opts.type = opts.type || 'market'
       //for futures
       opts.side = opts.side || 'buy'
+
+      //always add the leverage
+      opts.size = String(Math.floor(opts.size * (1/client.account.marginRate)))
+      opts.orig_size = opts.size
+      opts.remaining_size = opts.size
       let args = Object.create(opts)
-      delete args.type
-      delete args.side
-      delete args.size
-      delete args.price
-      client.buy(joinProduct(opts.product_id), opts.type, opts.size, opts.price, args).then((result) => {
+      client.buy(joinProduct(opts.product_id), args.type, args.size, args.price, args).then((result) => {
 
         if(result.orderCancelTransaction && (result.orderCancelTransaction.reason === 'INSUFFICIENT_MARGIN' ||
           result.orderCancelTransaction.reason === 'INSUFFICIENT_LIQUIDITY')) {
@@ -241,7 +242,7 @@ module.exports = function oanda (conf) {
         }
         let order = {
           symbol: opts.product_id,
-          id: result.orderCreateTransaction.clientExtensions.id,
+          id: result.orderCreateTransaction.id,
           status: result.orderFillTransaction && result.orderFillTransaction.tradeOpened ? 'done' : 'open',
           done_at: result.orderFillTransaction && result.orderFillTransaction.tradeOpened ? Date.parse(result.orderFillTransaction.time) : null,
           price: result.orderCreateTransaction.price,
@@ -301,7 +302,7 @@ module.exports = function oanda (conf) {
         }
         let order = {
           symbol: opts.product_id,
-          id: result.orderCreateTransaction.clientExtensions.id,
+          id: result.orderCreateTransaction.id,
           status: result.orderFillTransaction && result.orderFillTransaction.tradeOpened ? 'done' : 'open',
           done_at: result.orderFillTransaction && result.orderFillTransaction.tradeOpened ? Date.parse(result.orderFillTransaction.time) : null,
           price: result.orderCreateTransaction.price,
@@ -356,7 +357,7 @@ module.exports = function oanda (conf) {
       let func_args = [].slice.call(arguments)
       let client = authedClient()
       let order = orders['~' + opts.order_id]
-      client.fetchOrder(opts.order_id, joinProduct(opts.product_id)).then(function (body) {
+      client.getOrder(opts.order_id, joinProduct(opts.product_id)).then(function (body) {
         if (body.order.state !== 'PENDING' && body.order.status !== 'CANCELLED' && body.order.status !== 'TRIGGERED') {
           order.status = 'done'
           order.done_at = Date.parse(body.order.filledTime)
