@@ -152,10 +152,11 @@ module.exports = function oanda (conf) {
       client.syncAccount().then((account) => {
         let balance = {asset: 0, currency: 0}
         if(account.currency === opts.currency) {
-          balance.currency = account.NAV
-          balance.currency_hold = account.NAV - account.balance
+          balance.currency = account.marginAvailable
+          balance.currency_hold = 0
         }
 
+        //TODO: might need to look at orders also
         let values = account.trades.map((trade) => {
           if(trade.instrument.includes(opts.asset)) {
             return trade.currentUnits
@@ -163,12 +164,14 @@ module.exports = function oanda (conf) {
         })
 
 
+
+
         for(let i = 0, len = values.length; i < len; i++) {
-          balance.asset += values[i]
+          //TODO: extracted the leverage from the asset_hold
+          balance.asset += values[i] * account.marginRate
         }
 
-        //TODO: extracted the leverage from the asset_hold
-        balance.asset_hold = balance.asset * account.marginRate
+        balance.asset_hold = 0
         cb(null, balance)
       }).catch(function (error) {
         console.error('An error occurred', error)
