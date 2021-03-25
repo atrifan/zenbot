@@ -12,10 +12,10 @@ new OandaApi().fetchMarkets().then((markets) => {
             min_size: market.minimumTradeSize,
             max_size: market.maximumOrderUnits,
             min_total: 0,
-            increment: Number((10**market.pipLocation).toFixed(9)),
-            asset_increment: Number((10**(-market.displayPrecision)).toFixed(9)),
+            increment: String(Number((10**market.pipLocation).toFixed(9))),
+            asset_increment: String(Number((10**(-market.displayPrecision)).toFixed(9))),
             label: market.displayName
-        };
+        }
     });
 
     var target = require('path').resolve(__dirname, 'products.json')

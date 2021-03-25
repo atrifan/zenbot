@@ -180,7 +180,7 @@ module.exports = function oanda (conf) {
       let func_args = [].slice.call(arguments)
       let client = authedClient()
       client.getPrice(joinProduct(opts.product_id), Granularity.MINUTES, 1, 1, 'MBA').then(result => {
-        cb(null, { bid: result.currentPrice.B.bid.c, ask: result.currentPrice.A.ask.c })
+        cb(null, { bid: String(result.currentPrice.B.bid.c), ask: String(result.currentPrice.A.ask.c)})
       }).catch(function (error) {
         console.error('An error occurred', error)
         return retry('getQuote', func_args)

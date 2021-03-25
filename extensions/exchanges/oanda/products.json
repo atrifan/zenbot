@@ -6,8 +6,8 @@
     "min_size": "1",
     "max_size": "500000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "Silver/EUR"
   },
   {
@@ -17,8 +17,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "CAD/SGD"
   },
   {
@@ -28,8 +28,8 @@
     "min_size": "1",
     "max_size": "500000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "Silver"
   },
   {
@@ -39,8 +39,8 @@
     "min_size": "1",
     "max_size": "500",
     "min_total": 0,
-    "increment": 1,
-    "asset_increment": 0.1,
+    "increment": "1",
+    "asset_increment": "0.1",
     "label": "UK 100"
   },
   {
@@ -50,8 +50,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "GBP/NZD"
   },
   {
@@ -61,8 +61,8 @@
     "min_size": "1",
     "max_size": "200000",
     "min_total": 0,
-    "increment": 0.01,
-    "asset_increment": 0.001,
+    "increment": "0.01",
+    "asset_increment": "0.001",
     "label": "US 5Y T-Note"
   },
   {
@@ -72,8 +72,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.01,
-    "asset_increment": 0.001,
+    "increment": "0.01",
+    "asset_increment": "0.001",
     "label": "ZAR/JPY"
   },
   {
@@ -83,8 +83,8 @@
     "min_size": "1",
     "max_size": "2000",
     "min_total": 0,
-    "increment": 1,
-    "asset_increment": 0.1,
+    "increment": "1",
+    "asset_increment": "0.1",
     "label": "Hong Kong 33"
   },
   {
@@ -94,8 +94,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.01,
-    "asset_increment": 0.001,
+    "increment": "0.01",
+    "asset_increment": "0.001",
     "label": "EUR/HUF"
   },
   {
@@ -105,8 +105,8 @@
     "min_size": "1",
     "max_size": "1000",
     "min_total": 0,
-    "increment": 1,
-    "asset_increment": 0.1,
+    "increment": "1",
+    "asset_increment": "0.1",
     "label": "France 40"
   },
   {
@@ -116,8 +116,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "EUR/DKK"
   },
   {
@@ -127,8 +127,8 @@
     "min_size": "1",
     "max_size": "20000",
     "min_total": 0,
-    "increment": 0.01,
-    "asset_increment": 0.001,
+    "increment": "0.01",
+    "asset_increment": "0.001",
     "label": "Gold/CHF"
   },
   {
@@ -138,8 +138,8 @@
     "min_size": "1",
     "max_size": "5000",
     "min_total": 0,
-    "increment": 0.01,
-    "asset_increment": 0.001,
+    "increment": "0.01",
+    "asset_increment": "0.001",
     "label": "Palladium"
   },
   {
@@ -149,8 +149,8 @@
     "min_size": "1",
     "max_size": "100000",
     "min_total": 0,
-    "increment": 0.01,
-    "asset_increment": 0.001,
+    "increment": "0.01",
+    "asset_increment": "0.001",
     "label": "Brent Crude Oil"
   },
   {
@@ -160,8 +160,8 @@
     "min_size": "1",
     "max_size": "300",
     "min_total": 0,
-    "increment": 1,
-    "asset_increment": 0.1,
+    "increment": "1",
+    "asset_increment": "0.1",
     "label": "India 50"
   },
   {
@@ -171,8 +171,8 @@
     "min_size": "1",
     "max_size": "1000000",
     "min_total": 0,
-    "increment": 0.01,
-    "asset_increment": 0.001,
+    "increment": "0.01",
+    "asset_increment": "0.001",
     "label": "Natural Gas"
   },
   {
@@ -182,8 +182,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "USD/MXN"
   },
   {
@@ -193,8 +193,8 @@
     "min_size": "1",
     "max_size": "50000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "GBP/USD"
   },
   {
@@ -204,8 +204,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "NZD/HKD"
   },
   {
@@ -215,8 +215,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "AUD/CHF"
   },
   {
@@ -226,8 +226,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.01,
-    "asset_increment": 0.001,
+    "increment": "0.01",
+    "asset_increment": "0.001",
     "label": "CAD/JPY"
   },
   {
@@ -237,8 +237,8 @@
     "min_size": "1",
     "max_size": "1500000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "Copper"
   },
   {
@@ -248,8 +248,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "GBP/SGD"
   },
   {
@@ -259,8 +259,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "USD/SEK"
   },
   {
@@ -270,8 +270,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "AUD/HKD"
   },
   {
@@ -281,8 +281,8 @@
     "min_size": "1",
     "max_size": "10000",
     "min_total": 0,
-    "increment": 0.01,
-    "asset_increment": 0.001,
+    "increment": "0.01",
+    "asset_increment": "0.001",
     "label": "Gold/Silver"
   },
   {
@@ -292,8 +292,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "AUD/NZD"
   },
   {
@@ -303,8 +303,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.01,
-    "asset_increment": 0.001,
+    "increment": "0.01",
+    "asset_increment": "0.001",
     "label": "AUD/JPY"
   },
   {
@@ -314,8 +314,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "EUR/ZAR"
   },
   {
@@ -325,8 +325,8 @@
     "min_size": "1",
     "max_size": "1500000",
     "min_total": 0,
-    "increment": 0.01,
-    "asset_increment": 0.001,
+    "increment": "0.01",
+    "asset_increment": "0.001",
     "label": "Corn"
   },
   {
@@ -336,8 +336,8 @@
     "min_size": "1",
     "max_size": "500000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "Silver/NZD"
   },
   {
@@ -347,8 +347,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "SGD/CHF"
   },
   {
@@ -358,8 +358,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "AUD/SGD"
   },
   {
@@ -369,8 +369,8 @@
     "min_size": "1",
     "max_size": "10000",
     "min_total": 0,
-    "increment": 1,
-    "asset_increment": 0.1,
+    "increment": "1",
+    "asset_increment": "0.1",
     "label": "Taiwan Index"
   },
   {
@@ -380,8 +380,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.01,
-    "asset_increment": 0.001,
+    "increment": "0.01",
+    "asset_increment": "0.001",
     "label": "EUR/JPY"
   },
   {
@@ -391,8 +391,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "USD/CHF"
   },
   {
@@ -402,8 +402,8 @@
     "min_size": "1",
     "max_size": "10000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "USD/TRY"
   },
   {
@@ -413,8 +413,8 @@
     "min_size": "1",
     "max_size": "50000000",
     "min_total": 0,
-    "increment": 0.01,
-    "asset_increment": 0.001,
+    "increment": "0.01",
+    "asset_increment": "0.001",
     "label": "GBP/JPY"
   },
   {
@@ -424,8 +424,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "EUR/CZK"
   },
   {
@@ -435,8 +435,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "CHF/ZAR"
   },
   {
@@ -446,8 +446,8 @@
     "min_size": "1",
     "max_size": "10000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "EUR/TRY"
   },
   {
@@ -457,8 +457,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.01,
-    "asset_increment": 0.001,
+    "increment": "0.01",
+    "asset_increment": "0.001",
     "label": "USD/JPY"
   },
   {
@@ -468,8 +468,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "USD/NOK"
   },
   {
@@ -479,8 +479,8 @@
     "min_size": "1",
     "max_size": "200000",
     "min_total": 0,
-    "increment": 0.01,
-    "asset_increment": 0.001,
+    "increment": "0.01",
+    "asset_increment": "0.001",
     "label": "US 2Y T-Note"
   },
   {
@@ -490,8 +490,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.01,
-    "asset_increment": 0.001,
+    "increment": "0.01",
+    "asset_increment": "0.001",
     "label": "TRY/JPY"
   },
   {
@@ -501,8 +501,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "USD/DKK"
   },
   {
@@ -512,8 +512,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.01,
-    "asset_increment": 0.001,
+    "increment": "0.01",
+    "asset_increment": "0.001",
     "label": "CHF/JPY"
   },
   {
@@ -523,8 +523,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "EUR/PLN"
   },
   {
@@ -534,8 +534,8 @@
     "min_size": "1",
     "max_size": "20000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "Sugar"
   },
   {
@@ -545,8 +545,8 @@
     "min_size": "1",
     "max_size": "5000",
     "min_total": 0,
-    "increment": 0.01,
-    "asset_increment": 0.001,
+    "increment": "0.01",
+    "asset_increment": "0.001",
     "label": "US Russ 2000"
   },
   {
@@ -556,8 +556,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.01,
-    "asset_increment": 0.001,
+    "increment": "0.01",
+    "asset_increment": "0.001",
     "label": "SGD/JPY"
   },
   {
@@ -567,8 +567,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "AUD/CAD"
   },
   {
@@ -578,8 +578,8 @@
     "min_size": "1",
     "max_size": "200000",
     "min_total": 0,
-    "increment": 0.01,
-    "asset_increment": 0.001,
+    "increment": "0.01",
+    "asset_increment": "0.001",
     "label": "US 10Y T-Note"
   },
   {
@@ -589,8 +589,8 @@
     "min_size": "1",
     "max_size": "20000",
     "min_total": 0,
-    "increment": 10,
-    "asset_increment": 1,
+    "increment": "10",
+    "asset_increment": "1",
     "label": "Gold/JPY"
   },
   {
@@ -600,8 +600,8 @@
     "min_size": "1",
     "max_size": "500000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "Silver/GBP"
   },
   {
@@ -611,8 +611,8 @@
     "min_size": "1",
     "max_size": "20000",
     "min_total": 0,
-    "increment": 0.01,
-    "asset_increment": 0.001,
+    "increment": "0.01",
+    "asset_increment": "0.001",
     "label": "Gold/SGD"
   },
   {
@@ -622,8 +622,8 @@
     "min_size": "1",
     "max_size": "20000",
     "min_total": 0,
-    "increment": 0.01,
-    "asset_increment": 0.001,
+    "increment": "0.01",
+    "asset_increment": "0.001",
     "label": "Gold/NZD"
   },
   {
@@ -633,8 +633,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "NZD/USD"
   },
   {
@@ -644,8 +644,8 @@
     "min_size": "1",
     "max_size": "20000",
     "min_total": 0,
-    "increment": 0.01,
-    "asset_increment": 0.001,
+    "increment": "0.01",
+    "asset_increment": "0.001",
     "label": "Gold/CAD"
   },
   {
@@ -655,8 +655,8 @@
     "min_size": "1",
     "max_size": "12000",
     "min_total": 0,
-    "increment": 0.01,
-    "asset_increment": 0.001,
+    "increment": "0.01",
+    "asset_increment": "0.001",
     "label": "Netherlands 25"
   },
   {
@@ -666,8 +666,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "EUR/CHF"
   },
   {
@@ -677,8 +677,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "NZD/SGD"
   },
   {
@@ -688,8 +688,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "USD/HKD"
   },
   {
@@ -699,8 +699,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "CHF/HKD"
   },
   {
@@ -710,8 +710,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.01,
-    "asset_increment": 0.001,
+    "increment": "0.01",
+    "asset_increment": "0.001",
     "label": "USD/INR"
   },
   {
@@ -721,8 +721,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "USD/CAD"
   },
   {
@@ -732,8 +732,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "USD/CNH"
   },
   {
@@ -743,8 +743,8 @@
     "min_size": "1",
     "max_size": "20000",
     "min_total": 0,
-    "increment": 0.01,
-    "asset_increment": 0.001,
+    "increment": "0.01",
+    "asset_increment": "0.001",
     "label": "Gold/GBP"
   },
   {
@@ -754,8 +754,8 @@
     "min_size": "1",
     "max_size": "500000",
     "min_total": 0,
-    "increment": 1,
-    "asset_increment": 0.1,
+    "increment": "1",
+    "asset_increment": "0.1",
     "label": "Silver/JPY"
   },
   {
@@ -765,8 +765,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "USD/CZK"
   },
   {
@@ -776,8 +776,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "GBP/ZAR"
   },
   {
@@ -787,8 +787,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "EUR/HKD"
   },
   {
@@ -798,8 +798,8 @@
     "min_size": "1",
     "max_size": "20000",
     "min_total": 0,
-    "increment": 0.01,
-    "asset_increment": 0.001,
+    "increment": "0.01",
+    "asset_increment": "0.001",
     "label": "Gold/HKD"
   },
   {
@@ -809,8 +809,8 @@
     "min_size": "1",
     "max_size": "10000",
     "min_total": 0,
-    "increment": 1,
-    "asset_increment": 0.1,
+    "increment": "1",
+    "asset_increment": "0.1",
     "label": "US SPX 500"
   },
   {
@@ -820,8 +820,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "HKD/JPY"
   },
   {
@@ -831,8 +831,8 @@
     "min_size": "1",
     "max_size": "150000",
     "min_total": 0,
-    "increment": 0.01,
-    "asset_increment": 0.001,
+    "increment": "0.01",
+    "asset_increment": "0.001",
     "label": "Bund"
   },
   {
@@ -842,8 +842,8 @@
     "min_size": "1",
     "max_size": "2000",
     "min_total": 0,
-    "increment": 1,
-    "asset_increment": 0.1,
+    "increment": "1",
+    "asset_increment": "0.1",
     "label": "US Nas 100"
   },
   {
@@ -853,8 +853,8 @@
     "min_size": "1",
     "max_size": "100000",
     "min_total": 0,
-    "increment": 0.01,
-    "asset_increment": 0.001,
+    "increment": "0.01",
+    "asset_increment": "0.001",
     "label": "UK 10Y Gilt"
   },
   {
@@ -864,8 +864,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "EUR/AUD"
   },
   {
@@ -875,8 +875,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "USD/SGD"
   },
   {
@@ -886,8 +886,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "EUR/SEK"
   },
   {
@@ -897,8 +897,8 @@
     "min_size": "1",
     "max_size": "1000000",
     "min_total": 0,
-    "increment": 0.01,
-    "asset_increment": 0.001,
+    "increment": "0.01",
+    "asset_increment": "0.001",
     "label": "Wheat"
   },
   {
@@ -908,8 +908,8 @@
     "min_size": "1",
     "max_size": "20000",
     "min_total": 0,
-    "increment": 0.01,
-    "asset_increment": 0.001,
+    "increment": "0.01",
+    "asset_increment": "0.001",
     "label": "Gold/AUD"
   },
   {
@@ -919,8 +919,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "GBP/HKD"
   },
   {
@@ -930,8 +930,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "EUR/NZD"
   },
   {
@@ -941,8 +941,8 @@
     "min_size": "1",
     "max_size": "100000",
     "min_total": 0,
-    "increment": 0.01,
-    "asset_increment": 0.001,
+    "increment": "0.01",
+    "asset_increment": "0.001",
     "label": "West Texas Oil"
   },
   {
@@ -952,8 +952,8 @@
     "min_size": "1",
     "max_size": "500000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "Silver/AUD"
   },
   {
@@ -963,8 +963,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "EUR/CAD"
   },
   {
@@ -974,8 +974,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.01,
-    "asset_increment": 0.001,
+    "increment": "0.01",
+    "asset_increment": "0.001",
     "label": "USD/HUF"
   },
   {
@@ -985,8 +985,8 @@
     "min_size": "1",
     "max_size": "200000",
     "min_total": 0,
-    "increment": 0.01,
-    "asset_increment": 0.001,
+    "increment": "0.01",
+    "asset_increment": "0.001",
     "label": "US T-Bond"
   },
   {
@@ -996,8 +996,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "NZD/CAD"
   },
   {
@@ -1007,8 +1007,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "EUR/SGD"
   },
   {
@@ -1018,8 +1018,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "AUD/USD"
   },
   {
@@ -1029,8 +1029,8 @@
     "min_size": "1",
     "max_size": "500000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "Silver/CHF"
   },
   {
@@ -1040,8 +1040,8 @@
     "min_size": "1",
     "max_size": "600000",
     "min_total": 0,
-    "increment": 0.01,
-    "asset_increment": 0.001,
+    "increment": "0.01",
+    "asset_increment": "0.001",
     "label": "Soybeans"
   },
   {
@@ -1051,8 +1051,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "EUR/USD"
   },
   {
@@ -1062,8 +1062,8 @@
     "min_size": "1",
     "max_size": "2000",
     "min_total": 0,
-    "increment": 0.1,
-    "asset_increment": 0.01,
+    "increment": "0.1",
+    "asset_increment": "0.01",
     "label": "Singapore 30"
   },
   {
@@ -1073,8 +1073,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "GBP/AUD"
   },
   {
@@ -1084,8 +1084,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "USD/PLN"
   },
   {
@@ -1095,8 +1095,8 @@
     "min_size": "1",
     "max_size": "1250",
     "min_total": 0,
-    "increment": 1,
-    "asset_increment": 0.1,
+    "increment": "1",
+    "asset_increment": "0.1",
     "label": "Australia 200"
   },
   {
@@ -1106,8 +1106,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "CAD/HKD"
   },
   {
@@ -1117,8 +1117,8 @@
     "min_size": "1",
     "max_size": "1000",
     "min_total": 0,
-    "increment": 1,
-    "asset_increment": 0.1,
+    "increment": "1",
+    "asset_increment": "0.1",
     "label": "US Wall St 30"
   },
   {
@@ -1128,8 +1128,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "GBP/CAD"
   },
   {
@@ -1139,8 +1139,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "GBP/PLN"
   },
   {
@@ -1150,8 +1150,8 @@
     "min_size": "1",
     "max_size": "1000",
     "min_total": 0,
-    "increment": 1,
-    "asset_increment": 0.1,
+    "increment": "1",
+    "asset_increment": "0.1",
     "label": "Germany 30"
   },
   {
@@ -1161,8 +1161,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "EUR/NOK"
   },
   {
@@ -1172,8 +1172,8 @@
     "min_size": "1",
     "max_size": "20000",
     "min_total": 0,
-    "increment": 0.01,
-    "asset_increment": 0.001,
+    "increment": "0.01",
+    "asset_increment": "0.001",
     "label": "Gold/EUR"
   },
   {
@@ -1183,8 +1183,8 @@
     "min_size": "1",
     "max_size": "5000",
     "min_total": 0,
-    "increment": 0.01,
-    "asset_increment": 0.001,
+    "increment": "0.01",
+    "asset_increment": "0.001",
     "label": "Platinum"
   },
   {
@@ -1194,8 +1194,8 @@
     "min_size": "1",
     "max_size": "20000",
     "min_total": 0,
-    "increment": 0.01,
-    "asset_increment": 0.001,
+    "increment": "0.01",
+    "asset_increment": "0.001",
     "label": "Gold"
   },
   {
@@ -1205,8 +1205,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "NZD/CHF"
   },
   {
@@ -1216,8 +1216,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "USD/ZAR"
   },
   {
@@ -1227,8 +1227,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.01,
-    "asset_increment": 0.001,
+    "increment": "0.01",
+    "asset_increment": "0.001",
     "label": "NZD/JPY"
   },
   {
@@ -1238,8 +1238,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.01,
-    "asset_increment": 0.001,
+    "increment": "0.01",
+    "asset_increment": "0.001",
     "label": "USD/THB"
   },
   {
@@ -1249,8 +1249,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "GBP/CHF"
   },
   {
@@ -1260,8 +1260,8 @@
     "min_size": "1",
     "max_size": "3000",
     "min_total": 0,
-    "increment": 1,
-    "asset_increment": 0.1,
+    "increment": "1",
+    "asset_increment": "0.1",
     "label": "Europe 50"
   },
   {
@@ -1271,8 +1271,8 @@
     "min_size": "1",
     "max_size": "500",
     "min_total": 0,
-    "increment": 1,
-    "asset_increment": 0.1,
+    "increment": "1",
+    "asset_increment": "0.1",
     "label": "China A50"
   },
   {
@@ -1282,8 +1282,8 @@
     "min_size": "1",
     "max_size": "500000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "Silver/CAD"
   },
   {
@@ -1293,8 +1293,8 @@
     "min_size": "1",
     "max_size": "750",
     "min_total": 0,
-    "increment": 1,
-    "asset_increment": 0.1,
+    "increment": "1",
+    "asset_increment": "0.1",
     "label": "Japan 225"
   },
   {
@@ -1304,8 +1304,8 @@
     "min_size": "1",
     "max_size": "500000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "Silver/SGD"
   },
   {
@@ -1315,8 +1315,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "EUR/GBP"
   },
   {
@@ -1326,8 +1326,8 @@
     "min_size": "1",
     "max_size": "500000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "Silver/HKD"
   },
   {
@@ -1337,8 +1337,8 @@
     "min_size": "1",
     "max_size": "100000000",
     "min_total": 0,
-    "increment": 0.0001,
-    "asset_increment": 0.00001,
+    "increment": "0.0001",
+    "asset_increment": "0.00001",
     "label": "CAD/CHF"
   }
 ]
