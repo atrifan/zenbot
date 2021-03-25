@@ -163,9 +163,6 @@ module.exports = function oanda (conf) {
           }
         })
 
-
-
-
         for(let i = 0, len = values.length; i < len; i++) {
           //TODO: extracted the leverage from the asset_hold
           balance.asset += values[i] * account.marginRate
