@@ -166,8 +166,8 @@ class OandaApi {
   async getPricesFromTo(symbol, from, to, timeFrame, granularity, format) {
     if(to == null) {
       let current_date = new Date();
-      let current_date_utc = current_date.getTime() + current_date.getTimezoneOffset()
-      to = current_date_utc / 1000
+      let current_date_utc = new Date(current_date.getTime() + current_date.getTimezoneOffset() * 60000)
+      to = current_date_utc.getTime() / 1000
     }
 
     let prices = {}

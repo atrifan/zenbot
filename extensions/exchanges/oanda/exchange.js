@@ -7,6 +7,7 @@ const {OandaApi, Granularity} = require('./oanda')
 
 module.exports = function oanda (conf) {
   let authed_client
+  let last_requested_time
 
 
   function authedClient () {
@@ -62,12 +63,20 @@ module.exports = function oanda (conf) {
       let args = {}
       if (opts.from) {
         startTime = opts.from
+        let receivedDate = new Date(opts.from)
+        //convert to UTC
+        opts.from = (new Date(receivedDate.getTime() + receivedDate.getTimezoneOffset() * 60000)).getTime()
       } else {
         startTime = parseInt(opts.to, 10) - 3600000
         opts.from = startTime
         args['endTime'] = opts.to
       }
 
+      if (last_requested_time != opts.from) {
+        last_requested_time = opts.from
+      } else {
+        return cb(null, [])
+      }
       opts.from = opts.from ? opts.from / 1000 : null
       opts.to = opts.to ? opts.to / 1000 : null
       const symbol = joinProduct(opts.product_id)
