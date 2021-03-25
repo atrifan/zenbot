@@ -147,6 +147,26 @@ class OandaApi {
 
   }
 
+  async getPricesFromTo(symbol, from, to, timeFrame, granularity, format) {
+    const body = await this._getPricesFromTo(symbol, from, to, timeFrame, granularity, format)
+    let prices = {}
+    console.log(body)
+    let data = format.split('').map((_,idx) => {
+      let result = []
+      body[idx].candles.forEach((key) => {
+        result.push(new this.ctx.instrument.Candlestick(key))
+      })
+      return  result
+    })
+
+    format.split('').forEach((key,idx)  => {
+      prices[key] = data[idx]
+    })
+
+
+    return prices
+  }
+
   _getOrder(orderId) {
     return new Promise((resolve, reject) => {
       this.ctx.order.get(this.accountId, orderId, (res) => {
@@ -228,13 +248,19 @@ class OandaApi {
     })
   }
 
-  _getPricesFromTo(symbol, from, to, timeFrame, granularity,  format='M') {
+  _getPricesFromTo(symbol, from, to, timeFrame=Granularity.HOURS, granularity=1,  format='M') {
+    if(to == null) {
+      let current_date = new Date();
+      let current_date_utc = current_date.getTime() + current_date.getTimezoneOffset()
+      to = current_date_utc / 1000
+    }
     let promises = format.split('').map((priceFormat) => {
       return new Promise((resolve, reject) => {
         this.ctx.instrument.candles(symbol, {from: from, to: to, granularity: `${timeFrame}${granularity}`, price: priceFormat}, (res) => {
           if (res.statusCode === '200') {
             resolve(res.body)
           } else {
+            this._log(res)
             reject(JSON.parse(res.rawBody))
           }
         })
@@ -243,7 +269,7 @@ class OandaApi {
     return Promise.all(promises)
   }
 
-  _getPriceNow(symbol, timeFrame, granularity, noBackCandles=200,  format='M') {
+  _getPriceNow(symbol, timeFrame=Granularity.HOURS, granularity=1, noBackCandles=5000,  format='M') {
     let promises = format.split('').map((priceFormat) => {
       return new Promise((resolve, reject) => {
         this.ctx.instrument.candles(symbol, {
@@ -298,21 +324,24 @@ class OandaApi {
 }
 
 let oApi = new OandaApi()
-oApi.buy('XCU_USD','market',1).then((data) => {
-  console.log(data)
-  setTimeout(() => {
-    oApi.getOrder(data.orderCreateTransaction.id).then((data) => {
-      console.log('###')
-      console.log(data)
-      if(data.order.state === 'FILLED') {
-        oApi.closeTrade(data.order.tradeOpenedID).then((data) => {
-          console.log('$$$$')
-          console.log(data)
-        })
-      }
-    })
-  }, 5000)
-})
+oApi.getPricesFromTo('WTICO_USD', Date.UTC(2021,2,25, 8, 3, 0)/1000,
+  Date.UTC(2021,2,25, 12, 30, 0)/1000, Granularity.HOURS, 1, 'BA')
+  .then((data) => {oApi._log(data)})
+// oApi.buy('XCU_USD','market',1).then((data) => {
+//   console.log(data)
+//   setTimeout(() => {
+//     oApi.getOrder(data.orderCreateTransaction.id).then((data) => {
+//       console.log('###')
+//       console.log(data)
+//       if(data.order.state === 'FILLED') {
+//         oApi.closeTrade(data.order.tradeOpenedID).then((data) => {
+//           console.log('$$$$')
+//           console.log(data)
+//         })
+//       }
+//     })
+//   }, 5000)
+// })
 
 exports.OandaApi = OandaApi
 exports.Granularity = Granularity

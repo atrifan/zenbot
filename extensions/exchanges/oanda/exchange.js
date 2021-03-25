@@ -2,6 +2,7 @@ const {OandaApi, Granularity} = require('./oanda')
   , path = require('path')
   // eslint-disable-next-line no-unused-lets
   , colors = require('colors')
+  , {v4} = require('uuid')
   , _ = require('lodash')
 
 module.exports = function oanda (conf) {
@@ -59,7 +60,46 @@ module.exports = function oanda (conf) {
 
     /**have to implement**/
     getTrades: function(opts, cb) {
-      cb(null, trades)
+      let func_args = [].slice.call(arguments)
+      let client = authedClient()
+      let startTime = null
+      let args = {}
+      if (opts.from) {
+        startTime = opts.from
+      } else {
+        startTime = parseInt(opts.to, 10) - 3600000
+        opts.from = startTime
+        args['endTime'] = opts.to
+      }
+
+      opts.from = opts.from ? opts.from / 1000 : null
+      opts.to = opts.to ? opts.to / 1000 : null
+      const symbol = joinProduct(opts.product_id)
+      client.getPricesFromTo(symbol, opts.from, opts.to, opts.timeframe, opts.granularity, 'BA').then((result) => {
+        let trades_buy = result.B.map((trade) => {
+          return {
+            trade_id: v4(),
+            time: Date.parse(trade.time),
+            size: parseFloat(trade.volume),
+            price: parseFloat(trade.bid.c),
+            side: 'buy'
+          }
+        })
+        let trades_sell = result.A.map((trade) => {
+          return {
+            trade_id: v4(),
+            time: Date.parse(trade.time),
+            size: parseFloat(trade.volume),
+            price: parseFloat(trade.ask.c),
+            side: 'sell'
+          }
+        })
+        let trades = trades_buy.concat(trades_sell)
+        cb(null, trades)
+      }).catch((err) => {
+        console.error('An error occurred', err)
+        return retry('getTrades', func_args)
+      })
     },
 
     getClientTrades: function (opts, cb) {
@@ -154,7 +194,7 @@ module.exports = function oanda (conf) {
       client._cancelOrder(opts.order_id, joinProduct(opts.product_id)).then((body) => {
         cb(null, body)
       }).catch((err) => {
-        cb._log(err);
+        cb._log(err)
         if(err.statusCode !== '404') {
           return retry('cancelOrder', func_args, err)
         }
