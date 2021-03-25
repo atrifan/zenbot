@@ -59,7 +59,7 @@ module.exports = function oanda (conf) {
 
     /**have to implement**/
     getTrades: function(opts, cb) {
-
+      cb(null, trades)
     },
 
     getClientTrades: function (opts, cb) {
@@ -312,6 +312,8 @@ module.exports = function oanda (conf) {
           order.tradeID = body.order.tradeOpenedID
           order.filled_size = parseFloat(body.order.units)
           return cb(null, order)
+        } else if(body.order.status === 'CANCELLED') {
+          order.status = 'canceled'
         }
         cb(null, order)
       }, function(err) {

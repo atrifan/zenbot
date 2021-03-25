@@ -314,7 +314,6 @@ oApi.buy('XCU_USD','market',1).then((data) => {
   }, 5000)
 })
 
-
 exports.OandaApi = OandaApi
 exports.Granularity = Granularity
 exports.OrderType = OrderType
