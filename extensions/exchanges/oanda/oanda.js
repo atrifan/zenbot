@@ -370,11 +370,11 @@ class OandaApi {
   }
 }
 
-let oApi = new OandaApi()
-oApi.getPricesFromTo('WTICO_USD', Date.UTC(2021,1,25, 8, 3, 0)/1000,
-  Date.UTC(2021,2,25, 12, 30, 0)/1000, Granularity.MINUTES, 1, 'BA').then((data)=> {
-  console.log(data)
-})
+// let oApi = new OandaApi()
+// oApi.getPricesFromTo('WTICO_USD', Date.UTC(2021,1,25, 8, 3, 0)/1000,
+//   Date.UTC(2021,2,25, 12, 30, 0)/1000, Granularity.MINUTES, 1, 'BA').then((data)=> {
+//   console.log(data)
+// })
 //   .then((data) => {oApi._log(data)})
 // oApi.buy('XCU_USD','market',1).then((data) => {
 //   console.log(data)

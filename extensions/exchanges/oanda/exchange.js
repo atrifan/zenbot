@@ -71,7 +71,7 @@ module.exports = function oanda (conf) {
       opts.from = opts.from ? opts.from / 1000 : null
       opts.to = opts.to ? opts.to / 1000 : null
       const symbol = joinProduct(opts.product_id)
-      client.getPricesFromTo(symbol, opts.from, opts.to, opts.timeframe, opts.granularity, 'BA').then((result) => {
+      client.getPricesFromTo(symbol, opts.from, opts.to, 'M', 1, 'BA').then((result) => {
         let trades_buy = result.B.map((trade) => {
           return {
             trade_id: v4(),
