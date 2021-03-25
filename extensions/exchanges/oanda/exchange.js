@@ -167,7 +167,8 @@ module.exports = function oanda (conf) {
           balance.asset += values[i]
         }
 
-        balance.asset_hold = balance.asset
+        //TODO: extracted the leverage from the asset_hold
+        balance.asset_hold = balance.asset * account.marginRate
         cb(null, balance)
       }).catch(function (error) {
         console.error('An error occurred', error)
