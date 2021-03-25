@@ -124,7 +124,6 @@ class OandaApi {
       this.price = {}
     }
 
-    console.log(body)
     let data = format.split('').map((_,idx) => {
       let result = []
       body[idx].candles.forEach((key) => {
@@ -150,7 +149,6 @@ class OandaApi {
   async getPricesFromTo(symbol, from, to, timeFrame, granularity, format) {
     const body = await this._getPricesFromTo(symbol, from, to, timeFrame, granularity, format)
     let prices = {}
-    console.log(body)
     let data = format.split('').map((_,idx) => {
       let result = []
       body[idx].candles.forEach((key) => {
@@ -323,10 +321,10 @@ class OandaApi {
   }
 }
 
-let oApi = new OandaApi()
-oApi.getPricesFromTo('WTICO_USD', Date.UTC(2021,2,25, 8, 3, 0)/1000,
-  Date.UTC(2021,2,25, 12, 30, 0)/1000, Granularity.HOURS, 1, 'BA')
-  .then((data) => {oApi._log(data)})
+// let oApi = new OandaApi()
+// oApi.getPricesFromTo('WTICO_USD', Date.UTC(2021,2,25, 8, 3, 0)/1000,
+//   Date.UTC(2021,2,25, 12, 30, 0)/1000, Granularity.HOURS, 1, 'BA')
+//   .then((data) => {oApi._log(data)})
 // oApi.buy('XCU_USD','market',1).then((data) => {
 //   console.log(data)
 //   setTimeout(() => {
